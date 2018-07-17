@@ -33,7 +33,7 @@ class App extends Component {
         ready: false
     };
 
-    async componentDidMount() {
+    componentDidMount() {
         const { getCurrentBlock } = this.props;
         getCurrentBlock();
         this.poller = setInterval(() => {
