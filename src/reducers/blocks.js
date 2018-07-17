@@ -3,7 +3,6 @@ import { handleActions } from 'redux-actions';
 import { Record, Map, List, Set } from 'immutable';
 import * as ActionConstants from '../actions/actionConstants';
 
-export const getCurrentNum = state => state.currentBlockNum;
 export const _getBlockIds = state => state.blockIds;
 export const _getBlocks = state => state.blocks;
 export const _getCompletedBlocks = state => state.completedBlocks;

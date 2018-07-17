@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import blocks, { getCurrentNum, _getBlocks, _getBlockIds, _getBlock, _getCompletedBlocks } from './blocks';
+import blocks, { _getBlocks, _getBlockIds, _getBlock, _getCompletedBlocks } from './blocks';
 import transactions, { _getTransactions } from './transactions';
 
 const rootReducer = combineReducers({
@@ -7,7 +7,6 @@ const rootReducer = combineReducers({
     transactions
 });
 
-export const getCurrentBlockNum = state => getCurrentNum(state.blocks);
 export const getBlockIds = state => _getBlockIds(state.blocks);
 export const getBlocks = state => _getBlocks(state.blocks);
 export const getCompletedBlocks = state => _getCompletedBlocks(state.blocks);
