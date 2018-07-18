@@ -23,5 +23,5 @@ npm run start
 
 ### (Optional) Apply Infura Token
 According to Infura, intializing the `web3` object with a token can help prevent your requests from being throttled.
-1) Go [https://blog.infura.io/getting-started-with-infura-28e41844cc89](here) to obtain a token
+1) Go to [https://blog.infura.io/getting-started-with-infura-28e41844cc89](here) to obtain a token
 2) Modify the `INFURA_TOKEN` variable in `index.js`
