@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "flow-bin": "^0.76.0",
     "immutable": "^3.8.2",
     "lodash.compact": "^3.0.1",
     "lodash.reverse": "^4.0.1",

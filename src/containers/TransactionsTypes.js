@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { blockTransactionsTypeData } from '../selectors/blocksSelectors';
@@ -7,6 +9,8 @@ import { withStyles, withTheme } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import compose from 'recompose/compose';
 import { LineChart, CartesianGrid, XAxis, YAxis, Legend, Line, ResponsiveContainer } from 'recharts';
+
+import type { TransactionsTypeData } from '../selectors/blocksSelectors';
 
 const styles = (theme) => ({
     container: {
@@ -34,7 +38,13 @@ const styles = (theme) => ({
     }
 });
 
-class TransactionTypes extends PureComponent {
+type Props = {
+    classes: Object;
+    theme: Object;
+    data: TransactionsTypeData
+};
+
+class TransactionTypes extends PureComponent<Props> {
 
     render() {
         const { data, classes, theme } = this.props;

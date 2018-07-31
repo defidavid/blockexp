@@ -1,5 +1,20 @@
 ![image](https://user-images.githubusercontent.com/2999380/42854212-5dd0bc50-8a00-11e8-8241-1b5506535321.png)
 
+### Technology Used
+UI:
+* react
+* recharts (d3)
+* material-ui
+
+Data Management: 
+* redux
+* redux-saga
+* reselect
+* immutable
+
+Dev:
+* flow
+* create-react-app
 
 ### Dependencies
 Install:

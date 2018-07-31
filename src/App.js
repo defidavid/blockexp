@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -10,6 +12,8 @@ import compose from 'recompose/compose';
 import { getCompletedBlocks } from './reducers/index';
 import { LinearProgress } from 'material-ui/Progress';
 import Typography from 'material-ui/Typography';
+
+import type { Set } from 'immutable';
 
 const GET_CURRENT_BLOCK_POLL_INTERVAL = 2500;
 const MIN_NUM_BLOCKS = 7;
@@ -27,11 +31,23 @@ const styles = () => ({
     }
 });
 
-class App extends Component {
+type Props = {|
+    getCurrentBlock: () => Promise<any>;
+    classes: Object;
+    completedBlocks: Set<string>;
+|};
 
-    state = {
+type State = {
+    ready: bool;
+};
+
+class App extends Component<Props, State> {
+
+    state: State = {
         ready: false
     };
+
+    poller: IntervalID;
 
     componentDidMount() {
         const { getCurrentBlock } = this.props;
