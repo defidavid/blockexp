@@ -1,3 +1,4 @@
+// @flow
 
 import { createSelectorCreator, defaultMemoize } from 'reselect';
 import { getCompletedBlocks, getTransactions, getBlocks, getBlockIds } from '../reducers/index';
@@ -10,6 +11,12 @@ const customCreateSelector = createSelectorCreator(defaultMemoize, (a, b) => {
     }
     return true;
 });
+
+export type FeeToValueRatioData = {
+    data: { blockNumber: number, timestamp: number, feesValuePercent: number },
+    avgFeesPerBlock: number,
+    avgValuePerBlock: number
+};
 
 export const blocksFeeToValueRatio = customCreateSelector(
     getCompletedBlocks,
@@ -48,6 +55,12 @@ export const blocksFeeToValueRatio = customCreateSelector(
         };
     }
 );
+
+export type TransactionsTypeData = {
+    data: { timestamp: number, blockNumber: number, accountTxs: number, totalContractTxs: number },
+    avgAccountTxsPerBlock: number,
+    avgContractTxsPerBlock: number
+};
 
 export const blockTransactionsTypeData = customCreateSelector(
     getCompletedBlocks,

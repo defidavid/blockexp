@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 
 
 // Add your token here to avoid throttling by infura
-const INFURA_TOKEN = '';
+const INFURA_TOKEN = 'MPf01JRcVLmQ2ajBkJvv';
 
 window.web3 = new Web3(new Web3.providers.HttpProvider(`https://mainnet.infura.io/${INFURA_TOKEN}`));
 

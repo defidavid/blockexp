@@ -1,3 +1,5 @@
+// @flow
+
 import { takeEvery, put, select, fork, call, take } from 'redux-saga/effects';
 import * as ActionConstants from '../actions/actionConstants';
 import {
@@ -34,11 +36,11 @@ function* getPreviousBlock(blockHash) {
     }
 }
 
-export function* blockTransactionsSaga() {
+export function* blockTransactionsSaga(): Generator<any, any, any> {
     yield takeEvery(ActionConstants.BLOCK_LOADED, getBlockTransactions);
 }
 
-export function* previousBlocksSaga() {
+export function* previousBlocksSaga(): Generator<any, any, any> {
     let numHistoricBlocks = 0;
     while (MAX_BLOCKS_HISTORY > numHistoricBlocks) {
         const action = yield take(ActionConstants.BLOCK_TXS_COMPLETED, getPreviousBlock);

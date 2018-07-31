@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { blocksFeeToValueRatio } from '../selectors/blocksSelectors';
@@ -7,6 +9,8 @@ import { withStyles, withTheme } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import compose from 'recompose/compose';
 import { LineChart, CartesianGrid, XAxis, YAxis, Line, ResponsiveContainer } from 'recharts';
+
+import type { FeeToValueRatioData } from '../selectors/blocksSelectors';
 
 const styles = (theme) => ({
     container: {
@@ -34,7 +38,13 @@ const styles = (theme) => ({
     }
 });
 
-class FeeToValue extends PureComponent {
+type Props = {
+    classes: Object;
+    theme: Object;
+    data: FeeToValueRatioData
+};
+
+class FeeToValue extends PureComponent<Props> {
 
     render() {
         const { data, classes, theme } = this.props;
@@ -84,10 +94,10 @@ class FeeToValue extends PureComponent {
                                 Average Fees<br />
                             </Typography>
                             <Typography variant='subheading' align='center'>
-                                (per block)
+                                (eth per block)
                             </Typography>
                             <Typography variant='display3' align='center'>
-                                {parseFloat(data.avgFeesPerBlock, 10).toFixed(4)}
+                                {parseFloat(data.avgFeesPerBlock).toFixed(4)}
                             </Typography>
                         </Paper>
                     </Grid>
@@ -97,10 +107,10 @@ class FeeToValue extends PureComponent {
                                 Average Value Transfer
                             </Typography>
                             <Typography variant='subheading' align='center'>
-                                (per block)
+                                (eth per block)
                             </Typography>
                             <Typography variant='display3' align='center'>
-                                {parseFloat(data.avgValuePerBlock, 10).toFixed(4)}
+                                {parseFloat(data.avgValuePerBlock).toFixed(4)}
                             </Typography>
                         </Paper>
                     </Grid>

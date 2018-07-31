@@ -1,3 +1,5 @@
+// @flow
+
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga'
 import thunk from 'redux-thunk';

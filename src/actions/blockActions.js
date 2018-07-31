@@ -1,3 +1,5 @@
+// @flow
+
 import { createAction } from 'redux-actions';
 import * as ActionConstants from './actionConstants';
 import { getBlock as getBlockFromHash, getLatestBlock, getBlockIds } from '../reducers/index';
@@ -5,10 +7,13 @@ import compact from 'lodash.compact';
 import { fetchBlock, fetchCurrentBlockNumber } from '../apis/blocksApi';
 import { fetchTransaction } from '../apis/transactionsApi';
 
+import type { Dispatch } from 'redux';
+import type { GetState } from '../reducers/index';
+
 export const blockLoaded = createAction(ActionConstants.BLOCK_LOADED);
 
 export const getCurrentBlock = () => {
-    return async (dispatch, getState) => {
+    return async function (dispatch: Dispatch, getState: GetState) {
         try {
             const num = await fetchCurrentBlockNumber();
             const latestBlock = getLatestBlock(getState());
@@ -18,7 +23,7 @@ export const getCurrentBlock = () => {
                     throw new Error('Did not return block header');
                 }
                 const blockIds = getBlockIds(getState());
-                if (blockIds.indexOf(blockHeader.hash) === -1) {
+                if (blockIds.toJS().indexOf(blockHeader.hash) === -1) {
                     dispatch(blockLoaded(blockHeader));
                     dispatch(createAction(ActionConstants.BLOCK_NEWEST_LOADED)(blockHeader.hash));
                 }
@@ -30,8 +35,8 @@ export const getCurrentBlock = () => {
     };
 };
 
-export const getBlockTransactions = (blockHash) => {
-    return async (dispatch, getState) => {
+export const getBlockTransactions = (blockHash: string) => {
+    return async (dispatch: Dispatch, getState: GetState) => {
         const block = getBlockFromHash(getState(), blockHash);
         const promises = block.transactions.map(txHash => {
             let promise;

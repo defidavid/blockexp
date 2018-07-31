@@ -1,3 +1,5 @@
+// @flow
+
 export const BLOCK_LOADED = 'BLOCK_LOADED';
 export const BLOCK_TXS_COMPLETED = 'BLOCK_TXS_COMPLETED';
 export const BLOCK_NEWEST_LOADED = 'BLOCK_NEWEST_LOADED';

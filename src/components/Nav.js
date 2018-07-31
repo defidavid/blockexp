@@ -1,10 +1,18 @@
+// @flow
+
 import React, { Component } from 'react';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import AppBar from 'material-ui/AppBar';
 import { withRouter } from 'react-router-dom';
 
 const navList: Array<string> = ['/tx-type', '/fee-value-ratio'];
-class Nav extends Component {
+
+type Props = {
+    history: { push: (loc: string) => void };
+    location: { pathname: string };
+};
+
+class Nav extends Component<Props> {
     onNavChange = (event, value: number) => {
         this.props.history.push(navList[value]);
     };
