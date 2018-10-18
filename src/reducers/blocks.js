@@ -6,16 +6,16 @@ import * as ActionConstants from '../actions/actionConstants';
 
 export class BlockRecord extends Record({
     timestamp: -1,
-    number: -1,
     transactions: List(),
     hash: '',
-    parentHash: ''
+    parentHash: '',
+    number: ''
 }) {
     timestamp: number;
-    number: number;
     transactions: List<string>;
     hash: string;
     parentHash: string;
+    number: string;
 }
 
 export class BlocksStateRecord extends Record({
@@ -39,11 +39,11 @@ let reducers = {};
 
 reducers[ActionConstants.BLOCK_LOADED] = (state: BlocksStateRecord, { payload }) => {
     return state.setIn(['blocks', payload.hash], new BlockRecord({
-        number: payload.number,
         timestamp: payload.timestamp,
         transactions: List(payload.transactions),
         hash: payload.hash,
-        parentHash: payload.parentHash
+        parentHash: payload.parentHash,
+        number: payload.number
     }));
 };
 

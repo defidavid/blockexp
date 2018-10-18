@@ -2,7 +2,7 @@
 
 import { createAction } from 'redux-actions';
 import * as ActionConstants from './actionConstants';
-import { getBlock as getBlockFromHash, getLatestBlock, getBlockIds } from '../reducers/index';
+import { getBlock as getBlockFromHash, getBlocks } from '../reducers/index';
 import compact from 'lodash.compact';
 import { fetchBlock, fetchCurrentBlockNumber } from '../apis/blocksApi';
 import { fetchTransaction } from '../apis/transactionsApi';
@@ -16,22 +16,25 @@ export const getCurrentBlock = () => {
     return async function (dispatch: Dispatch, getState: GetState) {
         try {
             const num = await fetchCurrentBlockNumber();
-            const latestBlock = getLatestBlock(getState());
-            if (!latestBlock || latestBlock.number !== num) {
-                const blockHeader = await fetchBlock(num);
-                if (!blockHeader) {
-                    throw new Error('Did not return block header');
-                }
-                const blockIds = getBlockIds(getState());
-                if (blockIds.toJS().indexOf(blockHeader.hash) === -1) {
-                    dispatch(blockLoaded(blockHeader));
-                    dispatch(createAction(ActionConstants.BLOCK_NEWEST_LOADED)(blockHeader.hash));
-                }
+            if (!getBlocks(getState()).find(blockRecord => blockRecord.number === num)) {
+                const blockHeader = await dispatch(getBlock(num));
+                dispatch(createAction(ActionConstants.BLOCK_NEWEST_LOADED)(blockHeader.hash));
             }
         } catch (err) {
             // Log error
             console.log(err);
         }
+    };
+};
+
+export const getBlock = (blockHashOrNum: string | number) => {
+    return async (dispatch: Dispatch) => {
+        const blockHeader = await fetchBlock(blockHashOrNum);
+        if (!blockHeader) {
+            throw new Error('Did not return block header');
+        }
+        dispatch(blockLoaded(blockHeader));
+        return blockHeader;
     };
 };
 
@@ -51,6 +54,7 @@ export const getBlockTransactions = (blockHash: string) => {
             } catch (err) {
                 // Log error
                 console.log(err);
+                return promise;
             }
         });
         await Promise.all(compact(promises.toArray()));
