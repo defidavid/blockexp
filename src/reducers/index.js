@@ -20,13 +20,11 @@ export const getCompletedBlocks = (state: ReduxState) => _getCompletedBlocks(sta
 export const getBlock = (state: ReduxState, blockHash: string) => _getBlock(state.blocks, blockHash);
 export const getOldestBlock = (state: ReduxState) => {
     const blockIds = getBlockIds(state);
-    const blocks = getBlocks(state);
-    return blocks.get(blockIds.last());
+    return blockIds.last();
 }
 export const getLatestBlock = (state: ReduxState) => {
     const blockIds = getBlockIds(state);
-    const blocks = getBlocks(state);
-    return blocks.get(blockIds.first());
+    return blockIds.first();
 }
 
 export const getTransactions = (state: ReduxState) => _getTransactions(state.transactions);
