@@ -11,6 +11,10 @@ import type { Dispatch } from 'redux';
 import type { GetState } from '../reducers/index';
 
 export const blockLoaded = createAction(ActionConstants.BLOCK_LOADED);
+export const blockNewestLoaded = createAction(ActionConstants.BLOCK_NEWEST_LOADED);
+export const transactionLoaded = createAction(ActionConstants.TRANSACTION_LOADED);
+export const blockTransactionsCompleted = createAction(ActionConstants.BLOCK_TXS_COMPLETED);
+export const blockPreviousLoaded = createAction(ActionConstants.BLOCK_PREVIOUS_LOADED);
 
 export const getCurrentBlock = () => {
     return async function (dispatch: Dispatch, getState: GetState) {
@@ -18,7 +22,7 @@ export const getCurrentBlock = () => {
             const num = await fetchCurrentBlockNumber();
             if (!getBlocks(getState()).find(blockRecord => blockRecord.number === num)) {
                 const blockHeader = await dispatch(getBlock(num));
-                dispatch(createAction(ActionConstants.BLOCK_NEWEST_LOADED)(blockHeader.hash));
+                dispatch(blockNewestLoaded(blockHeader.hash));
             }
         } catch (err) {
             // Log error
@@ -47,7 +51,7 @@ export const getBlockTransactions = (blockHash: string) => {
                 promise = fetchTransaction(txHash);
                 promise.then(txData => {
                     if (txData) {
-                        dispatch(createAction(ActionConstants.TRANSACTION_LOADED)(txData));
+                        dispatch(transactionLoaded(txData));
                     }
                 });
                 return promise; 
@@ -58,6 +62,6 @@ export const getBlockTransactions = (blockHash: string) => {
             }
         });
         await Promise.all(compact(promises.toArray()));
-        dispatch(createAction(ActionConstants.BLOCK_TXS_COMPLETED)(blockHash));
+        dispatch(blockTransactionsCompleted(blockHash));
     };
 };
