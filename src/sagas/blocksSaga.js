@@ -2,7 +2,7 @@
 
 import { put, select, call, take, actionChannel } from 'redux-saga/effects';
 import * as ActionConstants from '../actions/actionConstants';
-import { getBlockTransactions, getBlock } from '../actions/blockActions';
+import { getBlockTransactions, getBlock, blockPreviousLoaded } from '../actions/blockActions';
 import { getOldestBlock } from '../reducers/index';
 
 const MAX_BLOCKS_HISTORY = 50;
@@ -11,11 +11,11 @@ function* getPreviousBlock(blockHash) {
     try {
         const blockHeader = yield put.resolve(getBlock(blockHash));
         if (!blockHeader) throw new Error('Did not return block header');
-        yield put({ type: ActionConstants.BLOCK_PREVIOUS_LOADED, payload: blockHeader.hash });
+        yield put(blockPreviousLoaded(blockHeader.hash));
         return blockHeader;
     } catch(err) {
         console.log(err);
-        return  yield call(getPreviousBlock, blockHash);
+        return yield call(getPreviousBlock, blockHash);
     }
 }
 
@@ -28,6 +28,8 @@ export function* blockTransactionsSaga(): Generator<any, any, any> {
 }
 
 export function* getPreviousBlocks(): Generator<any, any, any> {
+    yield take(ActionConstants.BLOCK_NEWEST_LOADED);
+
     const state = yield (select());
     let currentOldestBlock = getOldestBlock(state);
     let numHistoricBlocks = 0;
@@ -36,9 +38,4 @@ export function* getPreviousBlocks(): Generator<any, any, any> {
         currentOldestBlock = blockHeader.parentHash;
         ++numHistoricBlocks;
     }
-}
-
-export function* latestBlockSaga(): Generator<any, any, any> {
-    yield take(ActionConstants.BLOCK_NEWEST_LOADED);
-    yield call(getPreviousBlocks);
 };
